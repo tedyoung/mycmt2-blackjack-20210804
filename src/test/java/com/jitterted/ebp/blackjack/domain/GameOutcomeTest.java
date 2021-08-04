@@ -8,9 +8,8 @@ class GameOutcomeTest {
 
     @Test
     public void playerHasBetterHandThanDealerOutcomeIsPlayerBeatsDealer() throws Exception {
-        Deck deck = new StubDeck(Rank.TEN,   Rank.EIGHT,
-                                 Rank.QUEEN, Rank.JACK);
-        Game game = new Game(deck);
+        Deck playerBeatsDealerDeck = StubDeck.playerBeatsDealer();
+        Game game = new Game(playerBeatsDealerDeck);
         game.initialDeal();
 
         game.playerStands();
@@ -22,10 +21,8 @@ class GameOutcomeTest {
 
     @Test
     public void playerHitsAndGoesBustOutcomeIsPlayerBusted() throws Exception {
-        Deck deck = new StubDeck(Rank.TEN, Rank.EIGHT,
-                                 Rank.QUEEN, Rank.JACK,
-                                 Rank.THREE);
-        Game game = new Game(deck);
+        Deck playerHitsAndGoesBustDeck = StubDeck.playerHitsAndGoesBust();
+        Game game = new Game(playerHitsAndGoesBustDeck);
         game.initialDeal();
 
         game.playerHits();
@@ -33,4 +30,37 @@ class GameOutcomeTest {
         assertThat(game.determineOutcome())
                 .isEqualByComparingTo(GameOutcome.PLAYER_BUSTED);
     }
+
+    @Test
+    public void playerDealtBlackjackUponInitialDealThenImmediatelyWinsBlackjack() throws Exception {
+        Deck playerDealtBlackjackDeck = StubDeck.playerDealtBlackjack();
+        Game game = new Game(playerDealtBlackjackDeck);
+
+        game.initialDeal();
+
+        assertThat(game.determineOutcome())
+                .isEqualByComparingTo(GameOutcome.PLAYER_WINS_BLACKJACK);
+        assertThat(game.isPlayerDone())
+                .isTrue();
+    }
+
+    @Test
+    public void newGameThenIsPlayerDoneIsFalse() throws Exception {
+        Game game = new Game(null); // <-- "crash test" Dummy (placeholder) Test Double
+
+        assertThat(game.isPlayerDone())
+                .isFalse();
+    }
+
+    @Test
+    public void newGameInitialDealNotBlackjackThenPlayerDoneIsFalse() throws Exception {
+        Deck playerNotDealtBlackjackDeck = StubDeck.playerNotDealtBlackjack();
+        Game game = new Game(playerNotDealtBlackjackDeck);
+
+        game.initialDeal();
+
+        assertThat(game.isPlayerDone())
+                .isFalse();
+    }
+
 }
