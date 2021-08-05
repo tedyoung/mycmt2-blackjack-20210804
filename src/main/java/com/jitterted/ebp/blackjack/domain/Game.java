@@ -80,6 +80,9 @@ public class Game {
         // PRE-CONDITION: if player is done, throw exception
         playerHand.drawFrom(deck);
         playerDone = playerHand.isBusted();
+        if (playerDone) {
+            gameMonitor.roundCompleted(this);
+        }
     }
 
     public void playerStands() {
