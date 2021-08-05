@@ -46,6 +46,7 @@ public class Hand {
     }
 
     public void drawFrom(Deck deck) {
+        // PRE-CONDITION: is busted? throw exception
         cards.add(deck.draw());
     }
 

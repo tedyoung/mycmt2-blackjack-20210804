@@ -68,6 +68,7 @@ public class Game {
     }
 
     public void playerHits() {
+        // PRE-CONDITION: if player is done, throw exception
         playerHand.drawFrom(deck);
         playerDone = playerHand.isBusted();
     }
